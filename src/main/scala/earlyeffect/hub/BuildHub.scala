@@ -23,7 +23,7 @@ object BuildHub extends ZIOAppDefault:
   private val FallbackSpecular = ProjectMeta(
     name = "specular",
     organization = "rocks.earlyeffect",
-    version = "0.2.0",
+    version = "0.2.1",
     scalaVersion = "3.8.4",
     title = Some("Specular"),
     description = Some("Code-first tests-as-docs site generator for Scala."),
