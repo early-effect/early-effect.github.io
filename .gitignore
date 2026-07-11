@@ -1,0 +1,8 @@
+target/
+.bsp/
+.metals/
+.bloop/
+project/project/
+project/target/
+*.class
+.DS_Store

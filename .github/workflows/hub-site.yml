@@ -1,0 +1,60 @@
+name: Hub site
+
+# Manually rebuild www.earlyeffect.rocks from catalog-urls.txt metadata.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: hub-pages
+  cancel-in-progress: false
+
+env:
+  JAVA_OPTS: -Dfile.encoding=UTF-8
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Set up JDK
+        uses: actions/setup-java@0f481fcb613427c0f801b606911222b5b6f3083a # v5.5.0
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: sbt
+
+      - name: Set up sbt
+        uses: sbt/setup-sbt@66fb4376e81982c7d92a4074170846fff88e2e30 # v1.5.0
+
+      - name: Build hub site
+        shell: bash
+        run: sbt -v specularSite
+
+      - name: Preserve CNAME and .nojekyll
+        shell: bash
+        run: |
+          cp CNAME target/site/CNAME
+          touch target/site/.nojekyll
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
+        with:
+          path: target/site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ec86dd2f12068b14767c22d792a0 # v4.0.5
