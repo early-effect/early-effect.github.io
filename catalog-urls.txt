@@ -1,1 +1,2 @@
 https://www.earlyeffect.rocks/specular/metadata.json
+https://early-effect.github.io/ascent/metadata.json
