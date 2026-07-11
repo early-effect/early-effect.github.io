@@ -4,6 +4,16 @@ Org hub for [early-effect](https://github.com/early-effect) libraries.
 Built with [specular](https://github.com/early-effect/specular) from published micro-site
 `metadata.json` URLs listed in [`catalog-urls.txt`](catalog-urls.txt).
 
+## Brand mark
+
+| File | Use |
+|------|-----|
+| [`images/logo.svg`](images/logo.svg) | **Source of truth** for adaptation (CSS variables for colors; transparent-friendly) |
+| [`images/logo.png`](images/logo.png) | Raster hero/favicon companion (1024²) |
+
+Edit the SVG `:root` variables (`--ee-trace`, `--ee-pad`, `--ee-bg`, …) to retheme.
+Remove or clear the `.bg` rect for a transparent embed.
+
 ## Local build
 
 ```bash
