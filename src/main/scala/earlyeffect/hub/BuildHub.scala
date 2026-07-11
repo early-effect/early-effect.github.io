@@ -93,7 +93,7 @@ object BuildHub extends ZIOAppDefault:
       HtmlSsr.live,
       SiteWriter.live,
       NavBuilder.live,
-      Theme.earlyEffect,
+      EarlyEffectTheme.live,
       PageTemplate.live,
       LandingTemplate.live,
       SiteBuilder.live,
