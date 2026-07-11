@@ -1,7 +1,7 @@
 val scala3Version   = "3.8.4"
 val zioVersion      = "2.1.26"
 val zioHttpVersion  = "3.11.3"
-val specularVersion = "0.2.0"
+val specularVersion = "0.2.1"
 
 ThisBuild / scalaVersion := scala3Version
 ThisBuild / organization := "rocks.earlyeffect"
