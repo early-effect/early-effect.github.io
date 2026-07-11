@@ -1,5 +1,6 @@
 package earlyeffect.hub
 
+import earlyeffect.docs.EarlyEffectTheme
 import specular.ExampleRunner
 import specular.site.*
 import zio.*
@@ -14,18 +15,15 @@ import java.nio.file.{Files, Path, Paths, StandardCopyOption}
   * If a URL fails to fetch (e.g. docs not deployed yet), a fallback Specular card is used
   * so the hub can still build before the first Pages deploy.
   *
-  * Static assets under `images/` (logo, favicon) are copied into the site output. Until the
-  * published `specular-site` release includes `Hero.image`, the logo is injected into the
-  * landing HTML after the build.
+  * Branding comes from `early-effect-docs-theme`. Extra rasters under `images/` (e.g. PNG logo,
+  * favicon) are still copied into the site output.
   */
 object BuildHub extends ZIOAppDefault:
-
-  private val HeroImageSrc = "images/logo.png"
 
   private val FallbackSpecular = ProjectMeta(
     name = "specular",
     organization = "rocks.earlyeffect",
-    version = "0.1.0",
+    version = "0.2.0",
     scalaVersion = "3.8.4",
     title = Some("Specular"),
     description = Some("Code-first tests-as-docs site generator for Scala."),
@@ -43,6 +41,7 @@ object BuildHub extends ZIOAppDefault:
         title = "Early Effect",
         basePath = "/",
         description = Some("Open-source functional Scala and ZIO libraries."),
+        logo = Some(EarlyEffectTheme.logoHref),
         brand = Some(
           Brand(
             name = "Early Effect",
@@ -63,6 +62,7 @@ object BuildHub extends ZIOAppDefault:
                   BrandLink("GitHub", "https://github.com/early-effect"),
                   BrandLink("Maven Central", "https://central.sonatype.com/namespace/rocks.earlyeffect"),
                 ),
+                image = Some(EarlyEffectTheme.logoHref),
               )
             ),
             sections = Vector(catalog),
@@ -84,7 +84,8 @@ object BuildHub extends ZIOAppDefault:
       )
       result <- ZIO.serviceWithZIO[SiteBuilder](_.buildSite(model, out))
       _      <- copyStaticAssets(out)
-      _      <- injectHeroLogo(out)
+      _      <- EarlyEffectTheme.writeLogo(out)
+      _      <- injectFavicon(out)
       _      <- Console.printLine(s"Wrote hub → $out (${result.pages.size} files)")
     yield ()).provide(
       Client.default,
@@ -93,7 +94,7 @@ object BuildHub extends ZIOAppDefault:
       HtmlSsr.live,
       SiteWriter.live,
       NavBuilder.live,
-      Theme.earlyEffect,
+      EarlyEffectTheme.live,
       PageTemplate.live,
       LandingTemplate.live,
       SiteBuilder.live,
@@ -116,35 +117,17 @@ object BuildHub extends ZIOAppDefault:
       ()
     }
 
-  /** Inject hero logo + favicon for sites built against specular-site without Hero.image yet. */
-  private def injectHeroLogo(out: Path): Task[Unit] =
+  private def injectFavicon(out: Path): Task[Unit] =
     ZIO.attempt {
       val index = out.resolve("index.html")
       if Files.isRegularFile(index) then
         var html = Files.readString(index, StandardCharsets.UTF_8).nn
-        if !html.contains("specular-hero-image") then
-          val img =
-            s"""<img class="specular-hero-image" src="$HeroImageSrc" alt="Early Effect" width="160" height="160">"""
-          html = html.replaceFirst(
-            """(<h1[^>]*class="[^"]*specular-hero-title[^"]*"[^>]*>)""",
-            img + "$1",
-          )
         if !html.contains("""rel="icon"""") then
           html = html.replaceFirst(
             "</title>",
             """</title><link rel="icon" href="favicon.ico">""",
           )
-        Files.writeString(index, html, StandardCharsets.UTF_8)
-
-      val css = out.resolve("assets/theme.css")
-      if Files.isRegularFile(css) then
-        val extra =
-          """
-            |.specular-hero-image{display:block;width:10rem;height:10rem;margin:0 auto 1.25rem;object-fit:contain;border-radius:1.25rem;}
-            |""".stripMargin
-        val body = Files.readString(css, StandardCharsets.UTF_8).nn
-        if !body.contains(".specular-hero-image") then
-          Files.writeString(css, body + extra, StandardCharsets.UTF_8)
+          Files.writeString(index, html, StandardCharsets.UTF_8)
       ()
     }
 

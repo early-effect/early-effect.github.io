@@ -1,7 +1,7 @@
-val scala3Version     = "3.8.4"
-val zioVersion        = "2.1.26"
-val zioHttpVersion    = "3.11.3"
-val specularVersion   = "0.1.0"
+val scala3Version   = "3.8.4"
+val zioVersion      = "2.1.26"
+val zioHttpVersion  = "3.11.3"
+val specularVersion = "0.2.0"
 
 ThisBuild / scalaVersion := scala3Version
 ThisBuild / organization := "rocks.earlyeffect"
@@ -12,9 +12,10 @@ name           := "early-effect-hub"
 publish / skip := true
 
 libraryDependencies ++= Seq(
-  "rocks.earlyeffect" %% "specular-site" % specularVersion,
-  "dev.zio"           %% "zio"          % zioVersion,
-  "dev.zio"           %% "zio-http"     % zioHttpVersion,
+  "rocks.earlyeffect" %% "specular-site"           % specularVersion,
+  "rocks.earlyeffect" %% "early-effect-docs-theme" % specularVersion,
+  "dev.zio"           %% "zio"                     % zioVersion,
+  "dev.zio"           %% "zio-http"                % zioHttpVersion,
 )
 
 run / fork := true
