@@ -5,6 +5,7 @@ val specularVersion = "0.2.1"
 
 ThisBuild / scalaVersion := scala3Version
 ThisBuild / organization := "rocks.earlyeffect"
+// Version from sbt-dynver-ci (cache-stable `-ci` between tags).
 
 lazy val specularSite = taskKey[Unit]("Build the Early Effect hub site")
 
