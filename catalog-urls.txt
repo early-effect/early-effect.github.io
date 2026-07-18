@@ -1,3 +1,4 @@
 https://www.earlyeffect.rocks/specular/metadata.json
 https://www.earlyeffect.rocks/ascent/metadata.json
 https://www.earlyeffect.rocks/sbt-dynver-ci/metadata.json
+https://www.earlyeffect.rocks/zipx/metadata.json
