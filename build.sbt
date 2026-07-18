@@ -46,8 +46,13 @@ lazy val root = project
       "--enable-native-access=ALL-UNNAMED"
     ),
     Compile / mainClass := Some("earlyeffect.hub.BuildHub"),
+    // Write the client.js marker, then Fork.java BuildHub. Do not use
+    // `(Compile / runMain).toTask(...).value` in this same block: sbt hoists all
+    // `.value` calls, so runMain would run before IO.write and CI would fail on a
+    // clean checkout ("JS client not linked").
     specularSite := Def.uncached {
-      val log = streams.value.log
+      val log       = streams.value.log
+      val converter = fileConverter.value
       (hubJS / Compile / fastLinkJS).value
       val outDir = (hubJS / Compile / fastLinkJSOutput).value
       val mainJs = outDir / "main.js"
@@ -60,6 +65,20 @@ lazy val root = project
         (ThisBuild / baseDirectory).value / "target" / "hub-client-js.path"
       IO.write(marker, mainJs.getAbsolutePath)
       log.info(s"hubJS linked → $mainJs")
-      (Compile / runMain).toTask(" earlyeffect.hub.BuildHub").value
-    }
+
+      (Compile / compile).value
+      val jars =
+        (Compile / fullClasspath).value
+          .map(af => converter.toPath(af.data).toFile.getAbsolutePath)
+      val jvmOpts   = (run / javaOptions).value.toVector
+      val mainClass = "earlyeffect.hub.BuildHub"
+      log.info(s"specularSite: running $mainClass")
+      val code = Fork.java(
+        ForkOptions()
+          .withOutputStrategy(Some(LoggedOutput(log)))
+          .withRunJVMOptions(jvmOpts),
+        Seq("-cp", jars.mkString(java.io.File.pathSeparator), mainClass),
+      )
+      if code != 0 then sys.error(s"$mainClass failed with exit code $code")
+    },
   )
