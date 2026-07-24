@@ -15,8 +15,8 @@ import java.nio.file.{Files, Path, Paths, StandardCopyOption}
   * first-paint cards, then the Ascent client (`LiveCatalog.bootstrap`) re-fetches allowlisted manifests on each visit
   * so version bumps show up without rebuilding the hub. Rebuild the hub when the allowlist changes.
   *
-  * Branding comes from `early-effect-docs-theme` (header + hero PNGs via `writeLogo`).
-  * Extra rasters under `images/` (e.g. favicon) are still copied into the site output.
+  * Branding comes from `early-effect-docs-theme` (header + hero PNGs via `writeLogo`). Extra rasters under `images/`
+  * (e.g. favicon) are still copied into the site output.
   */
 object BuildHub extends ZIOAppDefault:
 
