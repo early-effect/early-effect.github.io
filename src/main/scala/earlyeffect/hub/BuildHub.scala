@@ -11,13 +11,12 @@ import java.nio.file.{Files, Path, Paths, StandardCopyOption}
 
 /** Builds the Early Effect org hub from published micro-site `metadata.json` URLs.
   *
-  * URL allowlist: `catalog-urls.txt` at the repo root (one https URL per line).
-  * The landing page SSRs optional first-paint cards, then the Ascent client
-  * (`LiveCatalog.bootstrap`) re-fetches allowlisted manifests on each visit so version
-  * bumps show up without rebuilding the hub. Rebuild the hub when the allowlist changes.
+  * URL allowlist: `catalog-urls.txt` at the repo root (one https URL per line). The landing page SSRs optional
+  * first-paint cards, then the Ascent client (`LiveCatalog.bootstrap`) re-fetches allowlisted manifests on each visit
+  * so version bumps show up without rebuilding the hub. Rebuild the hub when the allowlist changes.
   *
-  * Branding comes from `early-effect-docs-theme`. Extra rasters under `images/` (e.g. PNG logo,
-  * favicon) are still copied into the site output.
+  * Branding comes from `early-effect-docs-theme`. Extra rasters under `images/` (e.g. PNG logo, favicon) are still
+  * copied into the site output.
   */
 object BuildHub extends ZIOAppDefault:
 
@@ -38,8 +37,10 @@ object BuildHub extends ZIOAppDefault:
     val urls = readCatalogUrls
     (for
       fallback <- loadFallbackProjects(urls)
-      catalog = ProjectCatalog.live(urls, fallback =
-        if fallback.nonEmpty then fallback else Vector(FallbackSpecular)
+      catalog = ProjectCatalog.live(
+        urls,
+        fallback =
+          if fallback.nonEmpty then fallback else Vector(FallbackSpecular),
       )
       model = SiteModel(
         title = "Early Effect",
@@ -177,4 +178,5 @@ object BuildHub extends ZIOAppDefault:
         .map(_.trim)
         .filter(l => l.nonEmpty && !l.startsWith("#"))
         .toVector
+  end readCatalogUrls
 end BuildHub
