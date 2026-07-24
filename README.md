@@ -13,11 +13,10 @@ hub chrome), not on every library tag.
 
 | File | Use |
 |------|-----|
-| [`images/logo.svg`](images/logo.svg) | **Source of truth** for adaptation (CSS variables for colors; transparent-friendly) |
-| [`images/logo.png`](images/logo.png) | Raster hero/favicon companion (1024²) |
+| [`images/logo-hero.png`](images/logo-hero.png) | Landing / hero art (1024², transparent) |
+| [`images/logo.png`](images/logo.png) | Header mark (256², transparent) |
 
-Edit the SVG `:root` variables (`--ee-trace`, `--ee-pad`, `--ee-bg`, …) to retheme.
-Remove or clear the `.bg` rect for a transparent embed.
+No SVG. Both PNGs ship from `early-effect-docs-theme` via `EarlyEffectTheme.writeLogo`.
 
 ## Local build
 

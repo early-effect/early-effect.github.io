@@ -16,8 +16,8 @@ import java.nio.file.{Files, Path, Paths, StandardCopyOption}
   * (`LiveCatalog.bootstrap`) re-fetches allowlisted manifests on each visit so version
   * bumps show up without rebuilding the hub. Rebuild the hub when the allowlist changes.
   *
-  * Branding comes from `early-effect-docs-theme`. Extra rasters under `images/` (e.g. PNG logo,
-  * favicon) are still copied into the site output.
+  * Branding comes from `early-effect-docs-theme`. Extra rasters under `images/` (e.g. favicon)
+  * are still copied into the site output.
   */
 object BuildHub extends ZIOAppDefault:
 
@@ -45,7 +45,7 @@ object BuildHub extends ZIOAppDefault:
         title = "Early Effect",
         basePath = "/",
         description = Some("Open-source functional Scala and ZIO libraries."),
-        logo = Some(EarlyEffectTheme.logoHref),
+        logo = Some("images/logo.png"),
         brand = Some(
           Brand(
             name = "Early Effect",
@@ -66,7 +66,8 @@ object BuildHub extends ZIOAppDefault:
                   BrandLink("GitHub", "https://github.com/early-effect"),
                   BrandLink("Maven Central", "https://central.sonatype.com/namespace/rocks.earlyeffect"),
                 ),
-                image = Some(EarlyEffectTheme.logoHref),
+                // Header + hero PNGs live under images/; theme writeLogo syncs them after publish.
+                image = Some("images/logo-hero.png"),
               )
             ),
             sections = Vector(catalog),
