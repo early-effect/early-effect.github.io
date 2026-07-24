@@ -6,3 +6,9 @@ project/project/
 project/target/
 *.class
 .DS_Store
+
+# Metals / IDE
+*.semanticdb
+build.sbt.semanticdb
+project/metals.sbt
+.vscode/

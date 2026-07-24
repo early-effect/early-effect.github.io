@@ -2,11 +2,21 @@ val scala3Version = "3.8.4"
 val zioVersion = "2.1.26"
 val zioHttpVersion = "3.11.3"
 val ascentVersion = "0.1.0"
-val specularVersion = "0.5.1"
+val specularVersion = "0.6.2"
 
 ThisBuild / scalaVersion := scala3Version
 ThisBuild / organization := "rocks.earlyeffect"
 // Version from sbt-dynver-ci (cache-stable `-ci` between tags).
+
+// zipx: verify hub build + Scala Steward. Pages deploy stays in hub-site.yml.
+zipxJavaVersion  := "25"
+zipxScalaSteward := true
+zipxCapabilities += Capability.once("fmt", "scalafmtCheckAll")
+zipxCapabilities += Capability.once(
+  name = "test",
+  command = "specularSite",
+  needsCapabilities = List("fmt"),
+)
 
 lazy val specularSite =
   taskKey[Unit]("Link hub JS + build the Early Effect hub site")
