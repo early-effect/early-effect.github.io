@@ -11,13 +11,10 @@ hub chrome), not on every library tag.
 
 ## Brand mark
 
-| File | Use |
-|------|-----|
-| [`images/logo.svg`](images/logo.svg) | **Source of truth** for adaptation (CSS variables for colors; transparent-friendly) |
-| [`images/logo.png`](images/logo.png) | Raster hero/favicon companion (1024²) |
+Header and hero art come from `early-effect-docs-theme`
+(`EarlyEffectTheme.logoHref` / `heroImageHref`, written by `writeLogo`).
 
-Edit the SVG `:root` variables (`--ee-trace`, `--ee-pad`, `--ee-bg`, …) to retheme.
-Remove or clear the `.bg` rect for a transparent embed.
+Local `images/` keeps hub-only rasters (favicon, etc.).
 
 ## Local build
 

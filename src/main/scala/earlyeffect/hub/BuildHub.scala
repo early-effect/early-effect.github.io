@@ -16,15 +16,15 @@ import java.nio.file.{Files, Path, Paths, StandardCopyOption}
   * (`LiveCatalog.bootstrap`) re-fetches allowlisted manifests on each visit so version
   * bumps show up without rebuilding the hub. Rebuild the hub when the allowlist changes.
   *
-  * Branding comes from `early-effect-docs-theme`. Extra rasters under `images/` (e.g. PNG logo,
-  * favicon) are still copied into the site output.
+  * Branding comes from `early-effect-docs-theme` (header + hero PNGs via `writeLogo`).
+  * Extra rasters under `images/` (e.g. favicon) are still copied into the site output.
   */
 object BuildHub extends ZIOAppDefault:
 
   private val FallbackSpecular = ProjectMeta(
     name = "specular",
     organization = "rocks.earlyeffect",
-    version = "0.4.0",
+    version = "0.7.1",
     scalaVersion = "3.8.4",
     title = Some("Specular"),
     description = Some("Code-first tests-as-docs site generator for Scala."),
@@ -66,7 +66,7 @@ object BuildHub extends ZIOAppDefault:
                   BrandLink("GitHub", "https://github.com/early-effect"),
                   BrandLink("Maven Central", "https://central.sonatype.com/namespace/rocks.earlyeffect"),
                 ),
-                image = Some(EarlyEffectTheme.logoHref),
+                image = Some(EarlyEffectTheme.heroImageHref),
               )
             ),
             sections = Vector(catalog),
