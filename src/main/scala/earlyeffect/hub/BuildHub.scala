@@ -1,7 +1,6 @@
 package earlyeffect.hub
 
 import earlyeffect.docs.EarlyEffectTheme
-import specular.ExampleRunner
 import specular.site.*
 import zio.*
 import zio.http.Client
@@ -23,7 +22,7 @@ object BuildHub extends ZIOAppDefault:
   private val FallbackSpecular = ProjectMeta(
     name = "specular",
     organization = "rocks.earlyeffect",
-    version = "0.7.1",
+    version = "0.7.2",
     scalaVersion = "3.8.4",
     title = Some("Specular"),
     description = Some("Code-first tests-as-docs site generator for Scala."),
@@ -93,18 +92,7 @@ object BuildHub extends ZIOAppDefault:
       _      <- EarlyEffectTheme.writeLogo(out)
       _      <- injectFavicon(out)
       _      <- Console.printLine(s"Wrote hub → $out (${result.pages.size} files)")
-    yield ()).provide(
-      Client.default,
-      MarkdownRenderer.live,
-      ExampleRunner.live,
-      HtmlSsr.live,
-      SiteWriter.live,
-      NavBuilder.live,
-      EarlyEffectTheme.live,
-      PageTemplate.live,
-      LandingTemplate.live,
-      SiteBuilder.live,
-    )
+    yield ()).provideLayer(Client.default ++ EarlyEffectTheme.layers)
   end run
 
   private def copyStaticAssets(out: Path): Task[Unit] =
