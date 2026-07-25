@@ -12,3 +12,4 @@ project/target/
 build.sbt.semanticdb
 project/metals.sbt
 .vscode/
+.cursor/
