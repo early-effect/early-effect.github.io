@@ -22,7 +22,7 @@ object BuildHub extends ZIOAppDefault:
   private val FallbackSpecular = ProjectMeta(
     name = "specular",
     organization = "rocks.earlyeffect",
-    version = "0.10.0",
+    version = "0.10.1",
     scalaVersion = "3.8.4",
     title = Some("Specular"),
     description = Some("Code-first tests-as-docs site generator for Scala."),
@@ -95,21 +95,12 @@ object BuildHub extends ZIOAppDefault:
     yield ()).provideLayer(Client.default ++ hubLayers)
   end run
 
-  /** EE chalkboard theme: wider catalog + sticky landing footer (Specular 0.10.0 Landing is not yet flex). */
+  /** EE chalkboard theme with a wider catalog so the landing fills like project docs content. */
   private val hubLayers =
     Theme.fromTokens(
       EarlyEffectTheme.tokens.copy(
         extraCss = EarlyEffectTheme.tokens.extraCss +
           """
-            |.specular-site-Theme-Landing {
-            |  display: flex;
-            |  flex-direction: column;
-            |  min-height: 100vh;
-            |}
-            |.specular-site-Theme-Footer {
-            |  margin-top: auto;
-            |  flex-shrink: 0;
-            |}
             |.specular-site-Theme-Catalog {
             |  max-width: min(72rem, calc(100% - 3rem));
             |}
