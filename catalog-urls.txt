@@ -3,3 +3,4 @@ https://www.earlyeffect.rocks/ascent/metadata.json
 https://www.earlyeffect.rocks/sbt-dynver-ci/metadata.json
 https://www.earlyeffect.rocks/zipx/metadata.json
 https://www.earlyeffect.rocks/mermoid/metadata.json
+https://www.earlyeffect.rocks/saferis/metadata.json
