@@ -37,3 +37,9 @@ Custom domain: `www.earlyeffect.rocks` (see `CNAME`).
 2. Append that URL to `catalog-urls.txt`
 3. Run **Hub site** once (deploys the updated allowlist)
 4. Later releases of that library update the card on refresh without another hub rebuild
+
+## Development
+
+```bash
+./scripts/install-git-hooks  # once per clone: pre-commit runs scalafmtCheckAll
+```
