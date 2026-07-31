@@ -5,3 +5,4 @@ https://www.earlyeffect.rocks/zipx/metadata.json
 https://www.earlyeffect.rocks/mermoid/metadata.json
 https://www.earlyeffect.rocks/saferis/metadata.json
 https://www.earlyeffect.rocks/mechanoid/metadata.json
+https://www.earlyeffect.rocks/chekhov/metadata.json
