@@ -2,20 +2,23 @@ val scala3Version = "3.8.4"
 val zioVersion = "2.1.26"
 val zioHttpVersion = "3.11.3"
 val ascentVersion = "0.3.1"
-val specularVersion = "0.11.0"
+val specularVersion = "0.12.0"
 
 ThisBuild / scalaVersion := scala3Version
 ThisBuild / organization := "rocks.earlyeffect"
 // Version from sbt-dynver-ci (cache-stable `-ci` between tags).
 
 // zipx: verify hub build + Scala Steward. Pages deploy stays in hub-site.yml.
-zipxJavaVersion  := "25"
+val Fmt = CapabilityName("fmt")
+
+zipxJavaVersion  := JdkVersion("25")
 zipxScalaSteward := true
-zipxCapabilities += Capability.once("fmt", "scalafmtCheckAll")
-zipxCapabilities += Capability.once(
-  name = "test",
-  command = "specularSite",
-  needsCapabilities = List("fmt"),
+// Task keys rather than command strings: a rename is a build-load error, not a CI failure.
+zipxCapabilities += zipxTasks.once(Fmt, scalafmtCheckAll)
+zipxCapabilities += zipxTasks.once(
+  name = Capability.TestName,
+  command = specularSite,
+  needsCapabilities = List(Fmt),
 )
 
 lazy val specularSite =
