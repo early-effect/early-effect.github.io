@@ -1,25 +1,12 @@
-val scala3Version = "3.8.4"
-val zioVersion = "2.1.26"
-val zioHttpVersion = "3.11.3"
-val ascentVersion = "0.3.1"
-val specularVersion = "0.12.0"
+MyVersions.settings
 
-ThisBuild / scalaVersion := scala3Version
-ThisBuild / organization := "rocks.earlyeffect"
+organization := "rocks.earlyeffect"
 // Version from sbt-dynver-ci (cache-stable `-ci` between tags).
 
-// zipx: verify hub build + Scala Steward. Pages deploy stays in hub-site.yml.
-val Fmt = CapabilityName("fmt")
-
-zipxJavaVersion  := JdkVersion("25")
-zipxScalaSteward := true
-// Task keys rather than command strings: a rename is a build-load error, not a CI failure.
-zipxCapabilities += zipxTasks.once(Fmt, scalafmtCheckAll)
-zipxCapabilities += zipxTasks.once(
-  name = Capability.TestName,
-  command = specularSite,
-  needsCapabilities = List(Fmt),
-)
+// zipx: verify hub build. Pages deploy stays in hub-site.yml.
+zipxJavaVersion := JdkVersion("25")
+// Builtin Verify is parallel: fmt, workflow-check, advisories, test (zipxTestTask).
+zipxTestTask := zipxTasks.of(specularSite)
 
 lazy val specularSite =
   taskKey[Unit]("Link hub JS + build the Early Effect hub site")
@@ -27,16 +14,10 @@ lazy val specularSite =
 lazy val hubJS = project
   .in(file("hub-js"))
   .enablePlugins(ScalaJSPlugin)
+  .settings(MyVersions.hubJs)
   .settings(
     name := "early-effect-hub-js",
     publish / skip := true,
-    libraryDependencies ++= Seq(
-      "rocks.earlyeffect" %% "specular-core" % specularVersion,
-      "rocks.earlyeffect" %% "ascent-js" % ascentVersion,
-      "dev.zio" %% "zio" % zioVersion,
-      "io.github.cquiroz" %% "scala-java-time" % "2.7.0",
-      "io.github.cquiroz" %% "scala-java-time-tzdb" % "2.7.0"
-    ),
     scalaJSUseMainModuleInitializer := true,
     scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.ESModule)),
     Compile / mainClass := Some("earlyeffect.hub.ClientMain")
@@ -44,15 +25,10 @@ lazy val hubJS = project
 
 lazy val root = project
   .in(file("."))
+  .settings(MyVersions.hub)
   .settings(
     name := "early-effect-hub",
     publish / skip := true,
-    libraryDependencies ++= Seq(
-      "rocks.earlyeffect" %% "specular-site" % specularVersion,
-      "rocks.earlyeffect" %% "early-effect-docs-theme" % specularVersion,
-      "dev.zio" %% "zio" % zioVersion,
-      "dev.zio" %% "zio-http" % zioHttpVersion
-    ),
     run / fork := true,
     run / javaOptions ++= Seq(
       "--sun-misc-unsafe-memory-access=allow",
