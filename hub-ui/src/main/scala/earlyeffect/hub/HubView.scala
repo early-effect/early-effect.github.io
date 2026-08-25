@@ -3,14 +3,16 @@ package earlyeffect.hub
 import ascent.*
 import ascent.dsl.*
 import specular.site.ProjectMeta
-import zio.*
 
-/** Five-act Early Effect landing, authored as an Ascent program. */
-object HubApp:
+/** Static Ascent tree for the hub. JVM SSRs it; JS only remounts live islands. */
+object HubView:
 
-  def body(projects: Vector[ProjectMeta]): UIO[UI[Any]] =
-    for beat <- sq(0)
-    yield E.body(
+  val ProofMountId = "hub-proof"
+
+  def catalogMountId(layerId: String): String = s"hub-catalog-$layerId"
+
+  def body(projects: Vector[ProjectMeta]): UI[Any] =
+    E.body(
       HubCss.Page,
       HubCss.Chrome,
       Aria.ariaLabel("Early Effect"),
@@ -19,9 +21,37 @@ object HubApp:
       marquee,
       craft,
       machine(projects),
-      proof(beat),
+      proof,
       maker,
       footer,
+    )
+
+  def card(project: ProjectMeta): UI[Any] =
+    val safe   = project.withSanitizedLinks
+    val href   = safe.docsUrl.orElse(safe.homepage).getOrElse("#")
+    val badges = safe.versionBadge.toVector ++ safe.language.toVector
+    E.a(
+      HubCss.Card,
+      A.href(href),
+      A.rel("noopener noreferrer"),
+      A.target("_blank"),
+      E.h3(HubCss.CardTitle, safe.displayTitle),
+      E.p(HubCss.CardBody, CatalogGroups.blurb(safe)),
+      E.div(HubCss.Meta, fragment(badges.map(b => E.span(HubCss.Badge, b))*)),
+    )
+  end card
+
+  def proofPanel(beat: HubCopy.ProofBeat): UI[Any] =
+    E.div(
+      HubCss.Proof,
+      E.div(
+        HubCss.Board,
+        E.p(HubCss.BoardLabel, s"${beat.label} · this compiles"),
+        E.pre(HubCss.Pass, beat.compiles),
+        E.p(HubCss.BoardLabel, "this does not"),
+        E.pre(HubCss.Fail, beat.fails),
+      ),
+      E.p(HubCss.ProofNote, beat.note),
     )
 
   private def nav: UI[Any] =
@@ -113,7 +143,7 @@ object HubApp:
       E.h2(HubCss.Heading, "The machine"),
       E.p(
         HubCss.Lead,
-        "Write, prove, ship. One vertical. The cards fetch live version metadata from each micro-site.",
+        "Write, prove, ship. One vertical. Cards refresh from live metadata when JavaScript runs.",
       ),
       fragment(grouped.map { bay =>
         E.div(
@@ -133,6 +163,7 @@ object HubApp:
           ),
           E.div(
             HubCss.Grid,
+            A.id(catalogMountId(bay.layer.id)),
             if bay.projects.isEmpty then E.p(HubCss.Lead, s"${bay.layer.title} libraries publish here as they land.")
             else fragment(bay.projects.map(card)*),
           ),
@@ -141,24 +172,7 @@ object HubApp:
     )
   end machine
 
-  private def card(project: ProjectMeta): UI[Any] =
-    val safe   = project.withSanitizedLinks
-    val href   = safe.docsUrl.orElse(safe.homepage).getOrElse("#")
-    val badges = safe.versionBadge.toVector ++ safe.language.toVector
-    E.a(
-      HubCss.Card,
-      A.href(href),
-      A.rel("noopener noreferrer"),
-      A.target("_blank"),
-      E.h3(HubCss.CardTitle, safe.displayTitle),
-      E.p(HubCss.CardBody, CatalogGroups.blurb(safe)),
-      E.div(HubCss.Meta, fragment(badges.map(b => E.span(HubCss.Badge, b))*)),
-    )
-  end card
-
-  private def proof(beat: Source[Int]): UI[Any] =
-    val n       = HubCopy.proofBeats.size
-    val current = beat.map(i => HubCopy.proofBeats(Math.floorMod(i, n)))
+  private def proof: UI[Any] =
     E.section(
       HubCss.Section,
       HubCss.Reveal,
@@ -166,34 +180,8 @@ object HubApp:
       E.p(HubCss.Kicker, "Act IV"),
       E.h2(HubCss.Heading, "It runs"),
       E.p(HubCss.Lead, HubCopy.proofCaption),
-      E.div(
-        HubCss.Proof,
-        E.div(
-          HubCss.Board,
-          E.p(HubCss.BoardLabel, current.map(b => s"${b.label} · this compiles")),
-          E.pre(HubCss.Pass, current.map(_.compiles)),
-          E.p(HubCss.BoardLabel, "this does not"),
-          E.pre(HubCss.Fail, current.map(_.fails)),
-        ),
-        E.div(
-          E.p(HubCss.ProofNote, current.map(_.note)),
-          E.div(
-            HubCss.ProofNav,
-            E.button(
-              HubCss.Ghost,
-              Ev.onClick(_ => beat.update(i => Math.floorMod(i - 1, n))),
-              "Previous",
-            ),
-            E.button(
-              HubCss.Ghost,
-              Ev.onClick(_ => beat.update(i => Math.floorMod(i + 1, n))),
-              "Next",
-            ),
-          ),
-        ),
-      ),
+      E.div(A.id(ProofMountId), proofPanel(HubCopy.proofBeats.head)),
     )
-  end proof
 
   private def maker: UI[Any] =
     E.section(
@@ -242,5 +230,4 @@ object HubApp:
       E.span(" + "),
       E.a(A.href("https://www.earlyeffect.rocks/ascent/"), A.rel("noopener noreferrer"), A.target("_blank"), "ascent"),
     )
-
-end HubApp
+end HubView

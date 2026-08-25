@@ -5,21 +5,21 @@ import ascent.domtypes.AttrValue
 import specular.site.*
 import zio.*
 
-/** SSR shell: head chrome + no-JS fallback. The Ascent SPA replaces `body` on load. */
-final class HubLanding(theme: Theme) extends LandingTemplate:
+/** SSR the designed landing. JS only hydrates catalog grids and the proof flipper. */
+final class HubLanding extends LandingTemplate:
 
   def wrap(model: SiteModel): Task[UI[Any]] =
     val home     = model.home.getOrElse(HomePage())
     val catalog  = home.sections.collectFirst { case c: ProjectCatalog => c }
     val projects = catalog.map(_.projects).getOrElse(Vector.empty)
     val urls     = catalog.map(_.metadataUrls).getOrElse(Vector.empty)
-    theme.classNames.map { classes =>
+    ZIO.succeed(
       el(
         "html",
-        Vector(head(model, urls), body(classes, projects)),
+        Vector(head(model, urls), HubView.body(projects)),
         Vector(attr("lang", "en")),
       )
-    }
+    )
   end wrap
 
   private def head(model: SiteModel, urls: Vector[String]): UI[Any] =
@@ -62,83 +62,6 @@ final class HubLanding(theme: Theme) extends LandingTemplate:
     )
   end head
 
-  private def body(classes: ThemeClasses, projects: Vector[ProjectMeta]): UI[Any] =
-    val bays = CatalogGroups.bays(projects)
-    el(
-      "body",
-      Vector(
-        el(
-          "header",
-          Vector(
-            el(
-              "img",
-              Vector.empty,
-              Vector(
-                attr("class", "specular-hero-image"),
-                attr("src", HubCopy.heroImage),
-                attr("alt", HubCopy.title),
-                attr("height", "160"),
-              ),
-            ),
-            el("h1", Vector(UI.Text(HubCopy.title)), Vector(attr("class", "specular-hero-title"))),
-            el("p", Vector(UI.Text(HubCopy.tagline)), Vector(attr("class", "specular-hero-subtitle"))),
-            el("p", Vector(UI.Text(HubCopy.manifesto))),
-            el(
-              "nav",
-              Vector(
-                a("GitHub", HubCopy.githubOrg),
-                a("Maven Central", HubCopy.mavenCentral),
-                a("@russwyte", HubCopy.xProfile),
-              ),
-              Vector(attr("class", "specular-hero-links")),
-            ),
-          ),
-          Vector(attr("class", classes.hero)),
-        ),
-        el(
-          "section",
-          Vector(el("h2", Vector(UI.Text("Four rules on the board")))) ++
-            HubCopy.rules.map { r =>
-              el(
-                "article",
-                Vector(
-                  el("h3", Vector(UI.Text(r.title))),
-                  el("p", Vector(UI.Text(r.body))),
-                ),
-              )
-            },
-        ),
-      ) ++ bays.map { bay =>
-        el(
-          "section",
-          Vector(
-            el("h2", Vector(UI.Text(bay.layer.title)), Vector(attr("class", "specular-catalog-heading"))),
-            el("p", Vector(UI.Text(bay.layer.thesis))),
-            CatalogCards.grid(bay.projects, classes.card),
-          ),
-          Vector(attr("class", classes.catalog)),
-        )
-      } ++ Vector(
-        el(
-          "section",
-          Vector(
-            el("h2", Vector(UI.Text(HubCopy.makerName))),
-            el("p", Vector(UI.Text(HubCopy.makerBio))),
-          ),
-        ),
-        el(
-          "footer",
-          BuiltWith.credit(Some("Early Effect")),
-          Vector(attr("class", classes.footer)),
-        ),
-      ),
-      Vector(attr("class", classes.landing)),
-    )
-  end body
-
-  private def a(label: String, href: String): UI[Any] =
-    el("a", Vector(UI.Text(label)), SafeHref.anchorAttrs(href).map { case (k, v) => attr(k, v) })
-
   private def el(tag: String, children: Vector[UI[Any]], attrs: Vector[Attr[Any]] = Vector.empty): UI[Any] =
     UI.Element(tag, attrs, children)
 
@@ -147,5 +70,5 @@ final class HubLanding(theme: Theme) extends LandingTemplate:
 end HubLanding
 
 object HubLanding:
-  val live: ZLayer[Theme, Nothing, LandingTemplate] =
-    ZLayer.fromFunction(new HubLanding(_))
+  val live: ULayer[LandingTemplate] =
+    ZLayer.succeed(new HubLanding)

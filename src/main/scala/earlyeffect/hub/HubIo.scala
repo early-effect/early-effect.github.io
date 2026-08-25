@@ -15,6 +15,10 @@ object HubIo:
     blocking(s"read $path"):
       Files.readString(path, StandardCharsets.UTF_8).nn
 
+  def readBytes(path: Path): IO[HubError, Array[Byte]] =
+    blocking(s"read bytes $path"):
+      Files.readAllBytes(path).nn
+
   def writeUtf8(path: Path, text: String): IO[HubError, Unit] =
     blocking(s"write $path"):
       Files.writeString(path, text, StandardCharsets.UTF_8)

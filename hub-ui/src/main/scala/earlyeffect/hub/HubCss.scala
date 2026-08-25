@@ -5,7 +5,7 @@ import ascent.css.Styles.*
 
 /** Hub chrome authored as Ascent CSS: CssClass, Keyframes, GlobalStyle, typed media queries.
   *
-  * Palette matches the Early Effect chalkboard tokens so the SPA and library docs share a board.
+  * Palette matches the Early Effect chalkboard tokens so the hub and library docs share a board.
   */
 object HubCss:
 
@@ -148,7 +148,7 @@ object HubCss:
         MediaQuery(
           Media.prefersColorScheme.light,
           color(lightInk),
-          background(lightBg),
+          backgroundColor(lightBg),
         ),
       )
 
@@ -367,7 +367,7 @@ object HubCss:
       extends CssClass(
         padding(0.px, 1.75.rem),
         whiteSpace.nowrap,
-        Selector("::after", content("  ·"), color(terracotta)),
+        Selector("::after", Declaration("content", "\" · \""), color(terracotta)),
       )
 
   object Section

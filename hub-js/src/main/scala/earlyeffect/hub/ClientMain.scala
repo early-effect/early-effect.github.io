@@ -3,15 +3,13 @@ package earlyeffect.hub
 import ascent.*
 import zio.*
 
-/** Browser entry: mount the Early Effect landing as an Ascent SPA. */
+/** Browser entry: live catalog + proof islands. The page itself is SSR. */
 object ClientMain extends ZIOAppDefault:
 
   def run =
     for
-      urls     <- HubCatalog.allowlist
-      projects <- HubCatalog.fetch(urls)
-      ui       <- HubApp.body(projects)
-      _        <- AscentApp.mountBody(ui)
-      _        <- ZIO.never
+      _ <- HubCatalog.refresh
+      _ <- HubProof.mount
+      _ <- ZIO.never
     yield ()
 end ClientMain

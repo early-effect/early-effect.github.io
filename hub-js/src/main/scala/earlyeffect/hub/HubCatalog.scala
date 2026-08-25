@@ -1,18 +1,26 @@
 package earlyeffect.hub
 
-import ascent.Dom
+import ascent.*
+import ascent.dsl.*
 import specular.site.{LiveCatalogIds, ProjectMeta}
 import zio.*
 
 import scala.scalajs.js
 import ascent.dom as d
 
-/** Fetch allowlisted `metadata.json` manifests for the SPA catalog. */
+/** Live catalog island: refresh SSR grids from allowlisted `metadata.json`. */
 object HubCatalog:
+
+  def refresh: UIO[Unit] =
+    for
+      urls     <- allowlist
+      projects <- fetch(urls)
+      _        <- ZIO.foreachDiscard(CatalogGroups.bays(projects))(remount)
+    yield ()
 
   def allowlist: UIO[Vector[String]] =
     ZIO.succeed:
-      val nodes = Dom.document.querySelectorAll(s"""link[rel="${LiveCatalogIds.MetaLinkRel}"]""")
+      val nodes = d.document.querySelectorAll(s"""link[rel="${LiveCatalogIds.MetaLinkRel}"]""")
       (0 until nodes.length).toVector
         .flatMap { i =>
           val node = nodes.item(i)
@@ -51,6 +59,14 @@ object HubCatalog:
         else ZIO.fail(HubError.BodyTooLarge(url, body.length))
       meta <- ZIO.fromEither(ProjectMeta.parseJson(body)).mapError(reason => HubError.InvalidMeta(url, reason))
     yield meta.withSanitizedLinks
+
+  private def remount(bay: CatalogGroups.Bay): UIO[Unit] =
+    val node = d.document.getElementById(HubView.catalogMountId(bay.layer.id))
+    if node == null || bay.projects.isEmpty then ZIO.unit
+    else
+      val root = node.asInstanceOf[d.Element]
+      ZIO.succeed(root.innerHTML = "") *>
+        AscentApp.mount(fragment(bay.projects.map(HubView.card)*), root).unit
 
   private def detail(cause: Throwable): String =
     Option(cause.getMessage).map(_.nn).filter(_.nonEmpty).getOrElse(cause.toString)

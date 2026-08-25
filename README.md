@@ -1,13 +1,14 @@
 # earlyeffect.rocks
 
 Org hub for [early-effect](https://github.com/early-effect) libraries.
-The landing is an [Ascent](https://github.com/early-effect/ascent) SPA: typed CSS, five-act
-story, live catalog. [Specular](https://github.com/early-effect/specular) SSRs a readable
-fallback and the `metadata.json` allowlist in [`catalog-urls.txt`](catalog-urls.txt).
+[Specular](https://github.com/early-effect/specular) SSRs the landing as an
+[Ascent](https://github.com/early-effect/ascent) tree: typed CSS, five-act story, catalog.
+The `metadata.json` allowlist lives in [`catalog-urls.txt`](catalog-urls.txt).
 
-On load the Scala.js client fetches allowlisted manifests and mounts the page with
-`AscentApp.mountBody`. **Library version bumps appear on refresh**; rebuild the hub when
-you change the URL allowlist or hub chrome, not on every library tag.
+JavaScript is two islands only: live catalog versions, and the compile/does-not flipper.
+First paint is the board even if the bundle is stale or blocked. **Library version bumps
+still appear once JS runs**; rebuild the hub when you change the URL allowlist or hub
+chrome, not on every library tag.
 
 ## Brand mark
 

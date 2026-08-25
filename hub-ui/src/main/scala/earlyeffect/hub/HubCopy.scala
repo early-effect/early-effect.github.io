@@ -1,6 +1,6 @@
 package earlyeffect.hub
 
-/** Brand copy for the hub landing (SSR fallback and Ascent SPA). */
+/** Brand copy for the hub landing. */
 object HubCopy:
 
   val title: String     = "Early Effect"
@@ -18,7 +18,7 @@ object HubCopy:
     "I am Russ White. I break and make software and hardware, from Nashville. Early Effect is the public record of that: Scala 3 and ZIO tools I wanted in my own hands and did not want to keep private. If a type can carry the domain, it should. If a doc can lie, it should fail CI instead."
 
   val proofCaption: String =
-    "This page is Ascent on ZIO. Library cards fetch live metadata on load."
+    "This page is Ascent on ZIO. Library cards refresh from live metadata when JavaScript runs."
 
   val slogans: Vector[String] = Vector(
     "SQL that cannot inject",
