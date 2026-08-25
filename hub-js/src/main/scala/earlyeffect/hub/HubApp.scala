@@ -52,7 +52,8 @@ object HubApp:
       ),
       E.div(
         HubCss.HeroCopy,
-        E.p(HubCss.Eyebrow, "early-effect"),
+        E.p(HubCss.Kicker, "Act I"),
+        E.p(HubCss.Eyebrow, "the board"),
         E.h1(HubCss.Title, HubCopy.title),
         E.p(HubCss.Tagline, HubCopy.tagline),
         E.p(HubCss.Manifesto, HubCopy.manifesto),

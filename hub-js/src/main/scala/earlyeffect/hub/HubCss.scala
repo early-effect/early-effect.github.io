@@ -12,7 +12,7 @@ object HubCss:
   val bg: Color         = Color.hex("#1c1d1f")
   val surface: Color    = Color.hex("#2a2b2e")
   val ink: Color        = Color.hex("#e8e6dc")
-  val muted: Color      = Color.hex("#9a978c")
+  val muted: Color      = Color.hex("#c5c1b6")
   val terracotta: Color = Color.hex("#c46a52")
   val chalk: Color      = Color.hex("#d4a574")
   val rule: Color       = Color.hex("#3f4145")
@@ -21,13 +21,16 @@ object HubCss:
   val lightBg: Color      = Color.hex("#d8d6ce")
   val lightSurface: Color = Color.hex("#e9e7df")
   val lightInk: Color     = Color.hex("#2e2f31")
-  val lightMuted: Color   = Color.hex("#6a6860")
+  val lightMuted: Color   = Color.hex("#3f3d38")
   val lightAccent: Color  = Color.hex("#9c5848")
   val lightRule: Color    = Color.hex("#b5b3a8")
 
+  private val lightProse: MediaQuery =
+    MediaQuery(Media.prefersColorScheme.light, color(lightMuted))
+
   private val boardGrain: Image =
     Image.url(
-      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E"
+      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='480'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.32' numOctaves='2' stitchTiles='stitch'/%3E%3CfeGaussianBlur stdDeviation='2.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.28'/%3E%3C/svg%3E"
     )
 
   private val boardFill =
@@ -132,7 +135,7 @@ object HubCss:
         color(ink),
         background(boardFill),
         backgroundImage(boardGrain),
-        backgroundSize.px(220),
+        backgroundSize.px(480),
         backgroundBlendMode.softLight,
         fontFamily.of(
           FontFamily.named("Avenir Next"),
@@ -173,8 +176,9 @@ object HubCss:
         Selector(" a:hover", color(terracotta), textDecoration.none),
         MediaQuery(
           Media.prefersColorScheme.light,
-          background(lightSurface.alpha(0.9)),
+          background(lightSurface.alpha(0.92)),
           borderBottom(Border.solid(1.px, lightRule)),
+          Selector(" a", color(lightMuted)),
         ),
       )
 
@@ -287,6 +291,7 @@ object HubCss:
         fontSize(1.28.rem),
         margin(0.85.rem, 0.px, 0.px, 0.px),
         fontWeight(600),
+        MediaQuery(Media.prefersColorScheme.light, color(lightAccent)),
       )
 
   object Manifesto
@@ -295,6 +300,7 @@ object HubCss:
         fontSize(1.05.rem),
         maxWidth.px(36 * 16),
         margin(1.15.rem, 0.px, 0.px, 0.px),
+        lightProse,
       )
 
   object Ctas
@@ -342,6 +348,7 @@ object HubCss:
         fontSize(0.78.rem),
         letterSpacing(0.16.em),
         textTransform.uppercase,
+        lightProse,
       )
 
   object MarqueeTrack
@@ -395,6 +402,7 @@ object HubCss:
         color(muted),
         maxWidth.px(40 * 16),
         margin(0.px, 0.px, 2.rem, 0.px),
+        lightProse,
       )
 
   object Reveal
@@ -449,6 +457,7 @@ object HubCss:
         color(muted),
         margin.zero,
         fontSize(0.95.rem),
+        lightProse,
       )
 
   object Ticks
@@ -495,6 +504,7 @@ object HubCss:
       extends CssClass(
         color(muted),
         margin.zero,
+        lightProse,
       )
 
   object Pins
@@ -569,6 +579,7 @@ object HubCss:
         fontSize(0.92.rem),
         margin.zero,
         flexGrow(1),
+        lightProse,
       )
 
   object Meta
@@ -586,6 +597,7 @@ object HubCss:
         border(Border.solid(1.px, rule)),
         borderRadius.px(999),
         padding(0.12.rem, 0.55.rem),
+        lightProse,
       )
 
   object Proof
@@ -636,6 +648,7 @@ object HubCss:
       extends CssClass(
         color(muted),
         margin.zero,
+        lightProse,
       )
 
   object ProofNav
@@ -690,5 +703,11 @@ object HubCss:
         textAlign.center,
         Selector(" a", color(muted)),
         Selector(" a:hover", color(chalk)),
+        lightProse,
+        MediaQuery(
+          Media.prefersColorScheme.light,
+          Selector(" a", color(lightMuted)),
+          Selector(" a:hover", color(lightAccent)),
+        ),
       )
 end HubCss
