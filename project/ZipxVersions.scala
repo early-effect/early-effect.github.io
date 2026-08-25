@@ -15,9 +15,9 @@ object MyVersions extends ZipxVersions:
   val zio     = Lib("dev.zio", "zio", "2.1.26")
   val zioHttp = Lib("dev.zio", "zio-http", "3.11.3")
 
-  val ascentJs = Lib("rocks.earlyeffect", "ascent-js", "0.3.1")
+  val ascentJs = Lib("rocks.earlyeffect", "ascent-js", "0.4.1")
 
-  val specular      = Lib("rocks.earlyeffect", "specular-core", "0.12.0")
+  val specular      = Lib("rocks.earlyeffect", "specular-core", "0.14.0")
   val specularSite  = specular.mod("specular-site")
   val specularTheme = specular.mod("early-effect-docs-theme")
 
@@ -27,6 +27,7 @@ object MyVersions extends ZipxVersions:
   val scalajs  = Plugin("org.scala-js", "sbt-scalajs", "1.22.0")
   val scalafmt = Plugin("org.scalameta", "sbt-scalafmt", "2.6.2")
   val dynverCi = Plugin("rocks.earlyeffect", "sbt-dynver-ci", "0.2.2")
+  val splice   = Plugin("rocks.earlyeffect", "sbt-splice", "0.1.0")
 
   def hubJs = library(specular, ascentJs, zio, scalaJavaTime, scalaJavaTimeTzdb)
   def hub   = library(specularSite, specularTheme, zio, zioHttp)

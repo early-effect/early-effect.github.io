@@ -1,14 +1,17 @@
 package earlyeffect.hub
 
-import specular.site.LiveCatalog
+import ascent.*
 import zio.*
 
-/** Browser entry: refresh hub catalog cards from allowlisted metadata.json URLs. */
+/** Browser entry: mount the Early Effect landing as an Ascent SPA. */
 object ClientMain extends ZIOAppDefault:
 
   def run =
     for
-      _ <- LiveCatalog.bootstrap
-      _ <- ZIO.never
+      urls     <- HubCatalog.allowlist
+      projects <- HubCatalog.fetch(urls)
+      ui       <- HubApp.body(projects)
+      _        <- AscentApp.mountBody(ui)
+      _        <- ZIO.never
     yield ()
 end ClientMain
