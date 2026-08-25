@@ -1,13 +1,13 @@
 # earlyeffect.rocks
 
 Org hub for [early-effect](https://github.com/early-effect) libraries.
-Built with [specular](https://github.com/early-effect/specular) from published micro-site
-`metadata.json` URLs listed in [`catalog-urls.txt`](catalog-urls.txt).
+The landing is an [Ascent](https://github.com/early-effect/ascent) SPA: typed CSS, five-act
+story, live catalog. [Specular](https://github.com/early-effect/specular) SSRs a readable
+fallback and the `metadata.json` allowlist in [`catalog-urls.txt`](catalog-urls.txt).
 
-The hub SSRs optional first-paint cards, then an Ascent Scala.js client
-(`LiveCatalog.bootstrap`) re-fetches allowlisted manifests on each page load. **Library
-version bumps appear on refresh**; rebuild the hub when you change the URL allowlist (or
-hub chrome), not on every library tag.
+On load the Scala.js client fetches allowlisted manifests and mounts the page with
+`AscentApp.mountBody`. **Library version bumps appear on refresh**; rebuild the hub when
+you change the URL allowlist or hub chrome, not on every library tag.
 
 ## Brand mark
 
@@ -20,8 +20,10 @@ Local `images/` keeps hub-only rasters (favicon, etc.).
 
 ```bash
 sbt specularSite
-# → target/site (includes assets/client.js)
+# → target/site (includes assets/client.js from hubJS/spliceFull)
 ```
+
+Production JS is `spliceFull` (Closure). `hubJS/spliceFast` is the quicker local iterate.
 
 ## Deploy
 
