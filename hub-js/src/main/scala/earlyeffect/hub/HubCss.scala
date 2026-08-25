@@ -30,7 +30,7 @@ object HubCss:
 
   private val boardGrain: Image =
     Image.url(
-      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='480'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.32' numOctaves='2' stitchTiles='stitch'/%3E%3CfeGaussianBlur stdDeviation='2.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.28'/%3E%3C/svg%3E"
+      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='560' height='560'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.22' numOctaves='2' stitchTiles='stitch'/%3E%3CfeGaussianBlur stdDeviation='3.4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.16'/%3E%3C/svg%3E"
     )
 
   private val boardFill =
@@ -135,7 +135,7 @@ object HubCss:
         color(ink),
         background(boardFill),
         backgroundImage(boardGrain),
-        backgroundSize.px(480),
+        backgroundSize.px(560),
         backgroundBlendMode.softLight,
         fontFamily.of(
           FontFamily.named("Avenir Next"),
