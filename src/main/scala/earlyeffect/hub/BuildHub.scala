@@ -10,9 +10,9 @@ import java.nio.file.{Files, Path, Paths}
 
 /** Builds the Early Effect org hub from published micro-site `metadata.json` URLs.
   *
-  * URL allowlist: `catalog-urls.txt` at the repo root (one https URL per line). The landing SSRs a readable fallback,
-  * then the Ascent SPA (`ClientMain`) replaces the body: five-act story, live catalog, motion. Rebuild the hub when the
-  * allowlist or chrome changes.
+  * URL allowlist: `catalog-urls.txt` at the repo root (one https URL per line). The landing SSRs the designed page
+  * (`HubView`). JS only refreshes catalog versions and the proof flipper. Rebuild the hub when the allowlist or chrome
+  * changes.
   *
   * Branding comes from `early-effect-docs-theme` (`writeLogo`). Extra rasters under `images/` are copied into output.
   */
@@ -135,8 +135,27 @@ object BuildHub extends ZIOAppDefault:
         dest = out.resolve("assets/client.js")
         _ <- HubIo.createDirectories(dest.getParent)
         _ <- HubIo.copy(src, dest)
+        _ <- bustClientCache(out, dest)
       yield ()
+    end if
   end copyClientBundle
+
+  /** Pages/Fastly cache `client.js` for 10 minutes. A content hash on the script URL makes a new bundle a new cache key
+    * so a stale island cannot sit in front of fresh HTML.
+    */
+  private def bustClientCache(out: Path, js: Path): IO[HubError, Unit] =
+    for
+      bytes <- HubIo.readBytes(js)
+      hash  = Integer.toUnsignedString(java.util.Arrays.hashCode(bytes), 36)
+      index = out.resolve("index.html")
+      html <- HubIo.readUtf8(index)
+      needle = """src="assets/client.js""""
+      next   = html.replace(needle, s"""src="assets/client.js?v=$hash"""")
+      _ <-
+        if next == html then ZIO.fail(HubError.LandingIncomplete(Vector(needle)))
+        else HubIo.writeUtf8(index, next)
+    yield ()
+  end bustClientCache
 
   private def injectFavicon(out: Path): IO[HubError, Unit] =
     val index = out.resolve("index.html")
@@ -170,7 +189,17 @@ object BuildHub extends ZIOAppDefault:
 
   private def assertLanding(out: Path): IO[HubError, Unit] =
     HubIo.readUtf8(out.resolve("index.html")).flatMap { html =>
-      val need    = Vector(HubCopy.tagline, HubCopy.makerName, "Write", "Prove", "Ship", HubCopy.manifesto)
+      val need = Vector(
+        HubCopy.tagline,
+        HubCopy.makerName,
+        "Write",
+        "Prove",
+        "Ship",
+        HubCopy.manifesto,
+        "Act I",
+        s"""id="${HubView.ProofMountId}"""",
+        s"""id="${HubView.catalogMountId("write")}"""",
+      )
       val missing = need.filterNot(html.contains)
       if missing.isEmpty then ZIO.unit
       else ZIO.fail(HubError.LandingIncomplete(missing))
