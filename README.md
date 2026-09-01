@@ -46,3 +46,7 @@ Custom domain: `www.earlyeffect.rocks` (see `CNAME`).
 ```bash
 ./scripts/install-git-hooks  # once per clone: pre-commit runs scalafmtCheckAll
 ```
+
+## License
+
+Copyright Russell White. Licensed under the [Apache License, Version 2.0](LICENSE).
