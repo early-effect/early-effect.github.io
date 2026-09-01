@@ -16,3 +16,6 @@ project/metals.sbt
 
 # Playwright MCP snapshots
 .playwright-mcp/
+
+# Local hub debug captures at the repo root (brand art lives in images/)
+/*.png
