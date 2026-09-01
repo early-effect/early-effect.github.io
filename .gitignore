@@ -13,3 +13,6 @@ build.sbt.semanticdb
 project/metals.sbt
 .vscode/
 .cursor/
+
+# Playwright MCP snapshots
+.playwright-mcp/
