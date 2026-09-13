@@ -13,11 +13,11 @@ object MyVersions extends ZipxVersions:
   val scala: ScalaVersion = ScalaVersion("3.8.4")
 
   val zio     = Lib("dev.zio", "zio", "2.1.26")
-  val zioHttp = Lib("dev.zio", "zio-http", "3.11.4")
+  val zioHttp = Lib("dev.zio", "zio-http", "3.11.5")
 
   val ascentJs = Lib("rocks.earlyeffect", "ascent-js", "0.5.0")
 
-  val specular      = Lib("rocks.earlyeffect", "specular-core", "0.14.1")
+  val specular      = Lib("rocks.earlyeffect", "specular-core", "0.14.2")
   val specularSite  = specular.mod("specular-site")
   val specularTheme = specular.mod("early-effect-docs-theme")
 
