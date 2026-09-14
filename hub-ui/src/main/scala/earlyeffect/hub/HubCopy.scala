@@ -6,10 +6,10 @@ object HubCopy:
   val title: String     = "Early Effect"
   val tagline: String   = "Scala 3 craft, from the first effect."
   val manifesto: String =
-    "I write libraries that make the honest path the one that compiles. Docs that are programs. SQL the compiler can see. CI the build already knows. UI with the same ZIO you use everywhere else."
+    "I write libraries that make the honest path the one that compiles. Docs that are programs. SQL the compiler can see. HTTP as an effect, for humans, systems, and agents. CI the build already knows. UI with the same ZIO you use everywhere else."
 
   val description: String =
-    "Scala 3 and ZIO craft libraries: docs that are tests, SQL that cannot inject, CI the build describes, UI that is an effect."
+    "Scala 3 and ZIO craft libraries: docs that are tests, SQL that cannot inject, HTTP as an effect, CI the build describes, UI that is an effect."
 
   val origin: String = "https://www.earlyeffect.rocks"
 
@@ -22,6 +22,7 @@ object HubCopy:
 
   val slogans: Vector[String] = Vector(
     "SQL that cannot inject",
+    "HTTP as an effect",
     "Docs that fail CI",
     "CI the build describes",
     "UI that is an effect",
@@ -49,8 +50,8 @@ object HubCopy:
     Rule(
       "02",
       "The domain lives in the types",
-      "If the database cannot RETURNING, the call does not compile. States and events are enums. Transitions are effects.",
-      Vector("saferis", "mechanoid"),
+      "If the database cannot RETURNING, the call does not compile. States and events are enums. A BoundOp is the capability; HTTP and MCP are hosts.",
+      Vector("saferis", "mechanoid", "heddle"),
     ),
     Rule(
       "03",
@@ -72,8 +73,8 @@ object HubCopy:
     Layer(
       "write",
       "Write",
-      "UI, state, SQL, and machines as typed ZIO.",
-      Vector("ascent", "conduit", "saferis", "mechanoid"),
+      "HTTP, UI, SQL, state, and machines as typed ZIO.",
+      Vector("heddle", "ascent", "conduit", "saferis", "mechanoid"),
     ),
     Layer(
       "prove",
@@ -90,6 +91,7 @@ object HubCopy:
   )
 
   val blurbs: Map[String, String] = Map(
+    "heddle"  -> "HTTP as an effect. One BoundOp for humans, systems, and agents: HTTP, OpenAPI, MCP, stdio.",
     "ascent"  -> "Effect-native reactive UI for Scala 3. Renders straight to the DOM: no virtual DOM, no diffing.",
     "conduit" -> "Unidirectional state on ZIO. Actions, handlers, lenses. JVM, Scala.js, and Native.",
     "saferis" -> "Type-safe SQL for Scala 3 and ZIO. Injection is a compile error. Dialects gate what exists.",
@@ -107,6 +109,12 @@ object HubCopy:
   final case class ProofBeat(label: String, compiles: String, fails: String, note: String)
 
   val proofBeats: Vector[ProofBeat] = Vector(
+    ProofBeat(
+      "heddle",
+      """Endpoint.get("users" / int("id")).out[User].mcp""",
+      "a second tool DSL beside the REST routes",
+      "BoundOp is the capability. HTTP, OpenAPI, and MCP are hosts, not copies.",
+    ),
     ProofBeat(
       "saferis",
       """sql"select * from users where id = $id"""",

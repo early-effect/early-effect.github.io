@@ -8,3 +8,4 @@ https://www.earlyeffect.rocks/mechanoid/metadata.json
 https://www.earlyeffect.rocks/chekhov/metadata.json
 https://www.earlyeffect.rocks/sbt-splice/metadata.json
 https://www.earlyeffect.rocks/conduit/metadata.json
+https://www.earlyeffect.rocks/heddle/metadata.json
