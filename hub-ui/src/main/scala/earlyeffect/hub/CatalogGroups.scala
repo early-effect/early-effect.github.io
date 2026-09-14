@@ -27,7 +27,10 @@ object CatalogGroups:
     val fromMeta = project.description.map(_.trim).filter(_.nonEmpty).filterNot { d =>
       d.equalsIgnoreCase(project.name) || d.equalsIgnoreCase(project.displayTitle)
     }
-    fromMeta.orElse(HubCopy.blurbs.get(project.name.toLowerCase)).getOrElse(project.displayTitle)
+    HubCopy.blurbs
+      .get(project.name.toLowerCase)
+      .orElse(fromMeta)
+      .getOrElse(project.displayTitle)
 
   private def matches(project: ProjectMeta, name: String): Boolean =
     val n    = project.name.toLowerCase
