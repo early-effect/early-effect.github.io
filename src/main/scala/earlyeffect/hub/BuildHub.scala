@@ -1,10 +1,10 @@
 package earlyeffect.hub
 
 import earlyeffect.docs.EarlyEffectTheme
+import heddle.Client
 import specular.ExampleRunner
 import specular.site.*
 import zio.*
-import zio.http.Client
 
 import java.nio.file.{Files, Path, Paths}
 
@@ -21,8 +21,8 @@ object BuildHub extends ZIOAppDefault:
   private val FallbackSpecular = ProjectMeta(
     name = "specular",
     organization = "rocks.earlyeffect",
-    version = "0.10.1",
-    scalaVersion = "3.8.4",
+    version = "0.10.0",
+    scalaVersion = "3.9.0",
     title = Some("Specular"),
     description = Some("Code-first tests-as-docs site generator for Scala."),
     language = Some("Scala"),
@@ -77,7 +77,7 @@ object BuildHub extends ZIOAppDefault:
             name = "early-effect",
             organization = "rocks.earlyeffect",
             version = "1.0.0",
-            scalaVersion = "3.8.4",
+            scalaVersion = "3.9.0",
             title = Some(HubCopy.title),
             description = Some(HubCopy.description),
             homepage = Some(HubCopy.origin),
@@ -93,7 +93,7 @@ object BuildHub extends ZIOAppDefault:
       _      <- injectFavicon(out)
       _      <- assertLanding(out)
       _      <- Console.printLine(s"Wrote hub → $out (${result.pages.size} files)").orElseSucceed(())
-    yield ()).provideLayer(Client.default ++ hubLayers)
+    yield ()).provideLayer(Client.live ++ hubLayers)
   end run
 
   /** Chalkboard theme plus a custom [[HubLanding]] instead of Specular's stock catalog landing. */
