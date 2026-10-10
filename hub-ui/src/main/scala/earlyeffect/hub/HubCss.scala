@@ -49,49 +49,16 @@ object HubCss:
       ),
     )
 
-  object FloatMark
-      extends Keyframes(
-        Frame.from(transform(Transform.translateY(Length.zero))),
-        Frame.pct(50)(transform(Transform.translateY(Length.px(-10)))),
-        Frame.to(transform(Transform.translateY(Length.zero))),
-      )
-
-  object Drift
-      extends Keyframes(
-        Frame.from(
-          transform(Transform.list(Transform.translateY(Length.zero), Transform.scale(1))),
-          opacity(0.15),
-        ),
-        Frame.pct(40)(opacity(0.7)),
-        Frame.to(
-          transform(Transform.list(Transform.translateY(Length.px(-90)), Transform.scale(0.4))),
-          opacity(0),
-        ),
-      )
-
-  object Marquee
-      extends Keyframes(
-        Frame.from(transform(Transform.translateX(Length.zero))),
-        Frame.to(transform(Transform.translateX(Length.pct(-50)))),
-      )
-
   object FadeUp
       extends Keyframes(
         Frame.from(
           opacity(0),
-          transform(Transform.translateY(Length.px(22))),
+          transform(Transform.translateY(Length.px(12))),
         ),
         Frame.to(
           opacity(1),
           transform(Transform.translateY(Length.zero)),
         ),
-      )
-
-  object PulsePin
-      extends Keyframes(
-        Frame.from(transform(Transform.scale(1)), opacity(0.85)),
-        Frame.pct(50)(transform(Transform.scale(1.35)), opacity(0.35)),
-        Frame.to(transform(Transform.scale(1)), opacity(0.85)),
       )
 
   private val stillMotion: MediaQuery = MediaQuery(
@@ -158,9 +125,10 @@ object HubCss:
         top.px(0),
         zIndex(30),
         display.flex,
+        flexWrap.wrap,
         justifyContent.center,
-        gap(1.25.rem),
-        padding(0.7.rem, 1.25.rem),
+        gap(0.85.rem),
+        padding(0.55.rem, 1.rem),
         background(surface.alpha(0.86)),
         backdropFilter(Filter.blur(Length.px(12))),
         borderBottom(Border.solid(1.px, rule)),
@@ -184,318 +152,75 @@ object HubCss:
 
   object Hero
       extends CssClass(
-        position.relative,
-        overflow.hidden,
         display.grid,
-        gridTemplateColumns("1.05fr 1fr"),
-        gap(2.5.rem),
+        gridTemplateColumns("96px minmax(0, 0.7fr) minmax(0, 1.35fr)"),
+        gap(1.15.rem),
         alignItems.center,
-        padding(4.5.rem, 2.rem, 3.rem, 2.rem),
+        padding(1.05.rem, 2.rem, 0.15.rem, 2.rem),
         maxWidth.px(1120),
         margin(0.px, Length.auto),
         MediaQuery(
-          Media.maxWidth.px(900),
-          gridTemplateColumns("1fr"),
-          textAlign.center,
-          padding(3.rem, 1.25.rem, 2.rem, 1.25.rem),
+          Media.maxWidth.px(860),
+          gridTemplateColumns("minmax(0, 1fr)"),
+          padding(0.9.rem, 1.1.rem, 0.15.rem, 1.1.rem),
         ),
-      )
-
-  object MarkWrap
-      extends CssClass(
-        position.relative,
-        display.flex,
-        justifyContent.center,
-        FloatMark.use(
-          Time.s(5.5),
-          TimingFunction.easeInOut,
-          iterations = Some(SingleAnimationIterationCount.Infinite),
-        ),
-        stillMotion,
-      )
-
-  object MoteLayer
-      extends CssClass(
-        position.absolute,
-        inset.zero,
-        pointerEvents.none,
-        overflow.hidden,
       )
 
   object Mark
       extends CssClass(
         display.block,
-        width.pct(78),
-        maxWidth.px(420),
-        height.auto,
-        filter(
-          Filter.dropShadow(Shadow(Length.zero, Length.px(18), Length.px(40), terracotta.alpha(0.28)))
-        ),
-        MediaQuery(Media.maxWidth.px(900), margin(0.px, Length.auto), width.pct(62)),
-      )
-
-  object Mote
-      extends CssClass(
-        position.absolute,
-        width.px(5),
-        height.px(5),
-        borderRadius.pct(50),
-        background(cream.alpha(0.55)),
-        pointerEvents.none,
-        Drift.use(
-          Time.s(9),
-          TimingFunction.linear,
-          iterations = Some(SingleAnimationIterationCount.Infinite),
-        ),
-        Selector(":nth-child(1)", left.pct(12), top.pct(72), animationDelay.s(0)),
-        Selector(":nth-child(2)", left.pct(28), top.pct(58), animationDelay.s(1.4), background(terracotta.alpha(0.7))),
-        Selector(":nth-child(3)", left.pct(44), top.pct(80), animationDelay.s(2.8)),
-        Selector(":nth-child(4)", left.pct(61), top.pct(64), animationDelay.s(0.7), background(chalk.alpha(0.65))),
-        Selector(":nth-child(5)", left.pct(74), top.pct(78), animationDelay.s(3.3)),
-        Selector(":nth-child(6)", left.pct(18), top.pct(86), animationDelay.s(4.1), background(terracotta.alpha(0.45))),
-        Selector(":nth-child(7)", left.pct(86), top.pct(54), animationDelay.s(2.1)),
-        Selector(":nth-child(8)", left.pct(52), top.pct(48), animationDelay.s(5.2), background(cream.alpha(0.4))),
-        stillMotion,
+        width.auto,
+        height.px(96),
+        maxWidth.px(96),
       )
 
   object HeroCopy
       extends CssClass(
-        MediaQuery(Media.maxWidth.px(900), Selector(" *", marginLeft.auto, marginRight.auto))
-      )
-
-  object Eyebrow
-      extends CssClass(
-        color(terracotta),
-        fontSize(0.78.rem),
-        letterSpacing(0.22.em),
-        textTransform.uppercase,
-        fontWeight(700),
-        margin(0.px, 0.px, 0.75.rem, 0.px),
+        minWidth.px(0)
       )
 
   object Title
       extends CssClass(
-        fontSize(3.35.rem),
+        fontSize(2.35.rem),
         fontWeight(800),
         letterSpacing((-0.03).em),
         lineHeight(1.05),
         margin.zero,
-        FadeUp.use(Time.s(0.8), TimingFunction.easeOut, fill = Some(SingleAnimationFillMode.Both)),
-        MediaQuery(Media.maxWidth.px(900), fontSize(2.45.rem)),
+        FadeUp.use(Time.s(0.6), TimingFunction.easeOut, fill = Some(SingleAnimationFillMode.Both)),
+        MediaQuery(Media.maxWidth.px(860), fontSize(2.rem)),
         stillMotion,
       )
 
   object Tagline
       extends CssClass(
         color(chalk),
-        fontSize(1.28.rem),
-        margin(0.85.rem, 0.px, 0.px, 0.px),
+        fontSize(1.05.rem),
+        margin(0.45.rem, 0.px, 0.px, 0.px),
         fontWeight(600),
         MediaQuery(Media.prefersColorScheme.light, color(lightAccent)),
       )
 
-  object Manifesto
-      extends CssClass(
-        color(muted),
-        fontSize(1.05.rem),
-        maxWidth.px(36 * 16),
-        margin(1.15.rem, 0.px, 0.px, 0.px),
-        lightProse,
-      )
-
-  object Ctas
-      extends CssClass(
-        display.flex,
-        flexWrap.wrap,
-        gap(0.75.rem),
-        marginTop(1.6.rem),
-      )
-
-  object Cta
-      extends CssClass(
-        display.inlineBlock,
-        padding(0.55.rem, 1.15.rem),
-        border(Border.solid(1.px, rule)),
-        borderRadius.px(12),
-        color(ink),
-        fontWeight(600),
-        textDecoration.none,
-        background(surface),
-        Selector(PseudoClass.hover, borderColor(terracotta), color(terracotta), textDecoration.none),
-        MediaQuery(Media.prefersColorScheme.light, color(lightInk), background(lightSurface)),
-      )
-
-  object CtaAccent
-      extends CssClass(
-        display.inlineBlock,
-        padding(0.55.rem, 1.15.rem),
-        border(Border.solid(1.px, terracotta)),
-        borderRadius.px(12),
-        color(bg),
-        fontWeight(700),
-        textDecoration.none,
-        background(terracotta),
-        Selector(PseudoClass.hover, background(terracotta.lighten(0.08)), textDecoration.none, color(bg)),
-      )
-
-  object MarqueeBand
-      extends CssClass(
-        overflow.hidden,
-        borderTop(Border.solid(1.px, rule)),
-        borderBottom(Border.solid(1.px, rule)),
-        padding(0.65.rem, 0.px),
-        color(muted),
-        fontSize(0.78.rem),
-        letterSpacing(0.16.em),
-        textTransform.uppercase,
-        lightProse,
-      )
-
-  object MarqueeTrack
-      extends CssClass(
-        display.flex,
-        width.maxContent,
-        Marquee.use(
-          Time.s(38),
-          TimingFunction.linear,
-          iterations = Some(SingleAnimationIterationCount.Infinite),
-        ),
-        stillMotion,
-      )
-
-  object MarqueeItem
-      extends CssClass(
-        padding(0.px, 1.75.rem),
-        whiteSpace.nowrap,
-        Selector("::after", Declaration("content", "\" · \""), color(terracotta)),
-      )
-
-  object Section
+  object Stack
       extends CssClass(
         maxWidth.px(1120),
         margin(0.px, Length.auto),
-        padding(3.5.rem, 2.rem),
-        MediaQuery(Media.maxWidth.px(900), padding(2.5.rem, 1.25.rem)),
-      )
-
-  object Kicker
-      extends CssClass(
-        color(terracotta),
-        fontSize(0.75.rem),
-        letterSpacing(0.18.em),
-        textTransform.uppercase,
-        fontWeight(700),
-        margin.zero,
-      )
-
-  object Heading
-      extends CssClass(
-        fontSize(2.rem),
-        fontWeight(800),
-        letterSpacing((-0.02).em),
-        margin(0.4.rem, 0.px, 0.75.rem, 0.px),
-        MediaQuery(Media.maxWidth.px(900), fontSize(1.55.rem)),
-      )
-
-  object Lead
-      extends CssClass(
-        color(muted),
-        maxWidth.px(40 * 16),
-        margin(0.px, 0.px, 2.rem, 0.px),
-        lightProse,
-      )
-
-  object Reveal
-      extends CssClass(
-        FadeUp.use(
-          Time.s(0.7),
-          TimingFunction.easeOut,
-          fill = Some(SingleAnimationFillMode.Both),
-        ),
-        stillMotion,
-      )
-
-  object RuleGrid
-      extends CssClass(
-        display.grid,
-        gridTemplateColumns("repeat(2, minmax(0, 1fr))"),
-        gap(1.1.rem),
-        MediaQuery(Media.maxWidth.px(720), gridTemplateColumns("1fr")),
-      )
-
-  object Rule
-      extends CssClass(
-        background(surface),
-        backgroundImage(boardGrain),
-        backgroundBlendMode.softLight,
-        border(Border.solid(1.px, rule)),
-        borderRadius.px(14),
-        padding(1.35.rem, 1.4.rem, 1.2.rem, 1.4.rem),
-        borderLeft(Border.solid(3.px, terracotta)),
-        Selector(PseudoClass.hover, borderColor(terracotta)),
-        MediaQuery(Media.prefersColorScheme.light, background(lightSurface)),
-      )
-
-  object RuleNum
-      extends CssClass(
-        color(terracotta),
-        fontWeight(800),
-        letterSpacing(0.14.em),
-        fontSize(0.8.rem),
-        margin.zero,
-      )
-
-  object RuleTitle
-      extends CssClass(
-        fontSize(1.2.rem),
-        fontWeight(700),
-        margin(0.35.rem, 0.px, 0.45.rem, 0.px),
-      )
-
-  object RuleBody
-      extends CssClass(
-        color(muted),
-        margin.zero,
-        fontSize(0.95.rem),
-        lightProse,
-      )
-
-  object Ticks
-      extends CssClass(
-        display.flex,
-        flexWrap.wrap,
-        gap(0.4.rem),
-        marginTop(0.9.rem),
-      )
-
-  object Tick
-      extends CssClass(
-        fontSize(0.72.rem),
-        letterSpacing(0.06.em),
-        textTransform.uppercase,
-        color(chalk),
-        border(Border.solid(1.px, rule)),
-        borderRadius.px(999),
-        padding(0.15.rem, 0.6.rem),
+        padding(0.85.rem, 2.rem, 1.5.rem, 2.rem),
+        MediaQuery(Media.maxWidth.px(860), padding(0.75.rem, 1.1.rem, 1.25.rem, 1.1.rem)),
       )
 
   object Bay
       extends CssClass(
-        marginBottom(2.4.rem)
+        marginBottom(1.35.rem)
       )
 
   object BayHead
       extends CssClass(
-        display.flex,
-        alignItems.baseline,
-        gap(0.85.rem),
-        marginBottom(1.rem),
-        MediaQuery(Media.maxWidth.px(720), flexDirection.column, gap(0.25.rem)),
+        marginBottom(0.65.rem)
       )
 
   object BayTitle
       extends CssClass(
-        fontSize(1.35.rem),
+        fontSize(1.2.rem),
         fontWeight(800),
         margin.zero,
       )
@@ -503,38 +228,15 @@ object HubCss:
   object BayThesis
       extends CssClass(
         color(muted),
-        margin.zero,
+        margin(0.15.rem, 0.px, 0.px, 0.px),
         lightProse,
-      )
-
-  object Pins
-      extends CssClass(
-        display.flex,
-        gap(0.45.rem),
-        margin(0.35.rem, 0.px, 0.9.rem, 0.px),
-      )
-
-  object Pin
-      extends CssClass(
-        width.px(9),
-        height.px(9),
-        borderRadius.pct(50),
-        background(terracotta),
-        PulsePin.use(
-          Time.s(2.4),
-          TimingFunction.easeInOut,
-          iterations = Some(SingleAnimationIterationCount.Infinite),
-        ),
-        Selector(":nth-child(2)", animationDelay.s(0.35), background(chalk)),
-        Selector(":nth-child(3)", animationDelay.s(0.7), background(cream.alpha(0.85))),
-        stillMotion,
       )
 
   object Grid
       extends CssClass(
         display.grid,
-        gridTemplateColumns("repeat(auto-fill, minmax(16.5rem, 1fr))"),
-        gap(1.rem),
+        gridTemplateColumns("repeat(auto-fill, minmax(min(100%, 16rem), 1fr))"),
+        gap(0.75.rem),
       )
 
   object Card
@@ -546,7 +248,7 @@ object HubCss:
         backgroundBlendMode.softLight,
         border(Border.solid(1.px, rule)),
         borderRadius.px(14),
-        padding(1.2.rem, 1.25.rem, 1.1.rem, 1.25.rem),
+        padding(0.9.rem, 1.rem, 0.85.rem, 1.rem),
         textDecoration.none,
         color(ink),
         transition(
@@ -557,7 +259,7 @@ object HubCss:
         ),
         Selector(
           PseudoClass.hover,
-          transform(Transform.translateY(Length.px(-4))),
+          transform(Transform.translateY(Length.px(-3))),
           borderColor(terracotta),
           textDecoration.none,
           color(ink),
@@ -568,15 +270,15 @@ object HubCss:
 
   object CardTitle
       extends CssClass(
-        fontSize(1.12.rem),
+        fontSize(1.05.rem),
         fontWeight(700),
-        margin(0.px, 0.px, 0.35.rem, 0.px),
+        margin(0.px, 0.px, 0.25.rem, 0.px),
       )
 
   object CardBody
       extends CssClass(
         color(muted),
-        fontSize(0.92.rem),
+        fontSize(0.88.rem),
         margin.zero,
         flexGrow(1),
         lightProse,
@@ -587,7 +289,7 @@ object HubCss:
         display.flex,
         flexWrap.wrap,
         gap(0.4.rem),
-        marginTop(0.85.rem),
+        marginTop(0.65.rem),
       )
 
   object Badge
@@ -603,10 +305,10 @@ object HubCss:
   object Proof
       extends CssClass(
         display.grid,
-        gridTemplateColumns("1.1fr 1fr"),
-        gap(1.5.rem),
+        gridTemplateColumns("minmax(0, 1.15fr) minmax(0, 0.85fr)"),
+        gap(0.85.rem),
         alignItems.start,
-        MediaQuery(Media.maxWidth.px(800), gridTemplateColumns("1fr")),
+        MediaQuery(Media.maxWidth.px(860), gridTemplateColumns("minmax(0, 1fr)")),
       )
 
   object Board
@@ -614,10 +316,11 @@ object HubCss:
         background(Color.hex("#121314")),
         border(Border.solid(1.px, rule)),
         borderRadius.px(14),
-        padding(1.25.rem, 1.3.rem),
+        padding(0.85.rem, 0.95.rem),
         fontFamily.of(FontFamily.named("ui-monospace"), FontFamily.named("SFMono-Regular"), FontFamily.monospace),
-        fontSize(0.88.rem),
+        fontSize(0.82.rem),
         overflowX.auto,
+        maxWidth.pct(100),
       )
 
   object BoardLabel
@@ -626,14 +329,15 @@ object HubCss:
         letterSpacing(0.14.em),
         textTransform.uppercase,
         fontWeight(700),
-        margin(0.px, 0.px, 0.45.rem, 0.px),
+        margin(0.px, 0.px, 0.35.rem, 0.px),
+        color(cream),
       )
 
   object Pass
       extends CssClass(
         color(Color.hex("#b7c9a3")),
         whiteSpace.preWrap,
-        margin(0.px, 0.px, 1.1.rem, 0.px),
+        margin(0.px, 0.px, 0.75.rem, 0.px),
       )
 
   object Fail
@@ -648,14 +352,16 @@ object HubCss:
       extends CssClass(
         color(muted),
         margin.zero,
+        fontSize(0.92.rem),
         lightProse,
       )
 
   object ProofNav
       extends CssClass(
         display.flex,
-        gap(0.6.rem),
-        marginTop(1.1.rem),
+        flexWrap.wrap,
+        gap(0.5.rem),
+        marginTop(0.65.rem),
       )
 
   object Ghost
@@ -664,50 +370,49 @@ object HubCss:
         color(ink),
         border(Border.solid(1.px, rule)),
         borderRadius.px(10),
-        padding(0.4.rem, 0.9.rem),
+        padding(0.35.rem, 0.8.rem),
         fontWeight(600),
         cursor.pointer,
         Selector(PseudoClass.hover, borderColor(terracotta), color(terracotta)),
       )
 
-  object Maker
-      extends CssClass(
-        display.grid,
-        gridTemplateColumns("5.5rem 1fr"),
-        gap(1.4.rem),
-        alignItems.start,
-        MediaQuery(Media.maxWidth.px(640), gridTemplateColumns("1fr"), textAlign.center),
-      )
-
-  object MakerMark
-      extends CssClass(
-        width.px(88),
-        height.auto,
-        borderRadius.px(18),
-        MediaQuery(Media.maxWidth.px(640), margin(0.px, Length.auto)),
-      )
-
-  object Bio
-      extends CssClass(
-        fontSize(1.05.rem),
-        margin(0.px, 0.px, 1.1.rem, 0.px),
-        maxWidth.px(40 * 16),
-      )
-
   object Footer
       extends CssClass(
-        padding(1.1.rem, 1.5.rem, 1.6.rem, 1.5.rem),
+        padding(0.9.rem, 1.25.rem, 1.4.rem, 1.25.rem),
         borderTop(Border.solid(1.px, rule)),
         color(muted),
-        fontSize(0.85.rem),
+        fontSize(0.92.rem),
         textAlign.center,
-        Selector(" a", color(muted)),
-        Selector(" a:hover", color(chalk)),
+        Selector(" a", color(chalk), textDecoration.none, fontWeight(700)),
+        Selector(" a:hover", color(terracotta)),
         lightProse,
         MediaQuery(
           Media.prefersColorScheme.light,
-          Selector(" a", color(lightMuted)),
-          Selector(" a:hover", color(lightAccent)),
+          Selector(" a", color(lightAccent)),
+          Selector(" a:hover", color(lightInk)),
         ),
+      )
+
+  object MakerLine
+      extends CssClass(
+        margin(0.px, 0.px, 0.35.rem, 0.px)
+      )
+
+  object MakerName
+      extends CssClass(
+        color(ink),
+        fontWeight(800),
+        MediaQuery(Media.prefersColorScheme.light, color(lightInk)),
+      )
+
+  object MakerLinks
+      extends CssClass(
+        margin(0.px, 0.px, 0.45.rem, 0.px)
+      )
+
+  object Colophon
+      extends CssClass(
+        margin.zero,
+        fontSize(0.82.rem),
       )
 end HubCss
