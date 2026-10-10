@@ -3,10 +3,9 @@ package earlyeffect.hub
 /** Brand copy for the hub landing. */
 object HubCopy:
 
-  val title: String     = "Early Effect"
-  val tagline: String   = "Scala 3 craft, from the first effect."
-  val manifesto: String =
-    "I write libraries that make the honest path the one that compiles. Docs that are programs. SQL the compiler can see. HTTP as an effect, for humans, systems, and agents. CI the build already knows. UI with the same ZIO you use everywhere else."
+  val title: String   = "Early Effect"
+  val tagline: String = "Scala 3 craft, from the first effect."
+  val markAlt: String = "A ceramic bird and circuit mark"
 
   val description: String =
     "Scala 3 and ZIO craft libraries: docs that are tests, SQL that cannot inject, HTTP as an effect, CI the build describes, UI that is an effect."
@@ -14,23 +13,7 @@ object HubCopy:
   val origin: String = "https://www.earlyeffect.rocks"
 
   val makerName: String = "Russ White"
-  val makerBio: String  =
-    "I am Russ White. I break and make software and hardware, from Nashville. Early Effect is the public record of that: Scala 3 and ZIO tools I wanted in my own hands and did not want to keep private. If a type can carry the domain, it should. If a doc can lie, it should fail CI instead."
-
-  val proofCaption: String =
-    "This page is Ascent on ZIO. Library cards refresh from live metadata when JavaScript runs."
-
-  val slogans: Vector[String] = Vector(
-    "SQL that cannot inject",
-    "HTTP as an effect",
-    "Docs that fail CI",
-    "CI the build describes",
-    "UI that is an effect",
-    "Types that carry the domain",
-    "Machines you can name",
-    "Diagrams styled with CSS",
-    "Splice JS without Node",
-  )
+  val makerLine: String = "I break and make software and hardware, from Nashville."
 
   val githubOrg: String    = "https://github.com/early-effect"
   val githubUser: String   = "https://github.com/russwyte"
@@ -38,34 +21,8 @@ object HubCopy:
   val xProfile: String     = "https://x.com/russwyte"
   val heroImage: String    = "images/logo-hero.png"
 
-  final case class Rule(n: String, title: String, body: String, ticks: Vector[String])
-
-  val rules: Vector[Rule] = Vector(
-    Rule(
-      "01",
-      "Docs that cannot rot",
-      "A page is a program. Examples assert under zio-test. A red snippet fails CI instead of lying to the next reader.",
-      Vector("specular", "marklit"),
-    ),
-    Rule(
-      "02",
-      "The domain lives in the types",
-      "If the database cannot RETURNING, the call does not compile. States and events are enums. A BoundOp is the capability; HTTP and MCP are hosts.",
-      Vector("saferis", "mechanoid", "heddle"),
-    ),
-    Rule(
-      "03",
-      "The build is the source of truth",
-      "YAML does not get a vote. The module graph describes CI. Jar names stay cache-stable between tags. JS splices without Node.",
-      Vector("zipx", "sbt-dynver-ci", "sbt-splice"),
-    ),
-    Rule(
-      "04",
-      "UI is an effect",
-      "The same ZIO you already trust, all the way to the DOM. No virtual DOM. Tests fire the control the UI shows.",
-      Vector("ascent", "conduit", "chekhov"),
-    ),
-  )
+  def sameOrigin(href: String): Boolean =
+    href.startsWith("/") || href.startsWith("#") || href == origin || href.startsWith(s"$origin/")
 
   final case class Layer(id: String, title: String, thesis: String, names: Vector[String])
 
@@ -73,19 +30,19 @@ object HubCopy:
     Layer(
       "write",
       "Write",
-      "HTTP, UI, SQL, state, and machines as typed ZIO.",
+      "The domain lives in the types, and UI is the same ZIO all the way to the DOM.",
       Vector("heddle", "ascent", "conduit", "saferis", "mechanoid"),
     ),
     Layer(
       "prove",
       "Prove",
-      "Docs, tests, and diagrams that cannot drift.",
+      "A page is a program, and a red snippet fails CI instead of lying to the next reader.",
       Vector("specular", "chekhov", "mermoid", "marklit"),
     ),
     Layer(
       "ship",
       "Ship",
-      "CI the build already knows. No Node tax for Scala.js.",
+      "The build is the source of truth: YAML does not get a vote.",
       Vector("zipx", "sbt-dynver-ci", "sbt-splice"),
     ),
   )
@@ -136,9 +93,9 @@ object HubCopy:
   )
 
   val nav: Vector[(String, String)] = Vector(
-    "Craft" -> "#craft",
-    "Stack" -> "#stack",
+    "Write" -> "#write",
+    "Prove" -> "#prove",
+    "Ship"  -> "#ship",
     "Proof" -> "#proof",
-    "Maker" -> "#maker",
   )
 end HubCopy

@@ -2,13 +2,14 @@
 
 Org hub for [early-effect](https://github.com/early-effect) libraries.
 [Specular](https://github.com/early-effect/specular) SSRs the landing as an
-[Ascent](https://github.com/early-effect/ascent) tree: typed CSS, five-act story, catalog.
+[Ascent](https://github.com/early-effect/ascent) tree: the stack (Write, Prove, Ship)
+and the compile/does-not proof.
 The `metadata.json` allowlist lives in [`catalog-urls.txt`](catalog-urls.txt).
 
-JavaScript is two islands only: live catalog versions, and the compile/does-not flipper.
-First paint is the board even if the bundle is stale or blocked. **Library version bumps
-still appear once JS runs**; rebuild the hub when you change the URL allowlist or hub
-chrome, not on every library tag.
+JavaScript is two islands only: live catalog versions, and the proof flipper.
+First paint is the stack and the proof even if the bundle is stale or blocked.
+**Library version bumps still appear once JS runs**; rebuild the hub when you change
+the URL allowlist or hub chrome, not on every library tag.
 
 ## Brand mark
 

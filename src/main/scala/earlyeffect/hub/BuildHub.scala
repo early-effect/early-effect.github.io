@@ -192,17 +192,27 @@ object BuildHub extends ZIOAppDefault:
       val need = Vector(
         HubCopy.tagline,
         HubCopy.makerName,
+        HubCopy.makerLine,
         "Write",
         "Prove",
         "Ship",
-        HubCopy.manifesto,
-        "Act I",
+        "https://www.earlyeffect.rocks/heddle/",
         s"""id="${HubView.ProofMountId}"""",
         s"""id="${HubView.catalogMountId("write")}"""",
       )
+      val banned = Vector(
+        "Act I",
+        "Act II",
+        "Act III",
+        "Act IV",
+        "Act V",
+        "the board",
+        "when JavaScript runs",
+      )
       val missing = need.filterNot(html.contains)
-      if missing.isEmpty then ZIO.unit
-      else ZIO.fail(HubError.LandingIncomplete(missing))
+      val present = banned.filter(html.contains)
+      if missing.isEmpty && present.isEmpty then ZIO.unit
+      else ZIO.fail(HubError.LandingIncomplete(missing ++ present.map(s => s"banned:$s")))
     }
 
   private def readCatalogUrls: IO[HubError, Vector[String]] =
