@@ -94,7 +94,6 @@ object BuildHub extends ZIOAppDefault:
       _      <- assertLanding(out)
       _      <- Console.printLine(s"Wrote hub → $out (${result.pages.size} files)").orElseSucceed(())
     yield ()).provideLayer(Client.live ++ hubLayers)
-  end run
 
   /** Chalkboard theme plus a custom [[HubLanding]] instead of Specular's stock catalog landing. */
   private val hubLayers =
@@ -122,8 +121,6 @@ object BuildHub extends ZIOAppDefault:
         favicon = Paths.get("images/favicon.ico")
         _ <- HubIo.copy(favicon, out.resolve("favicon.ico")).when(Files.isRegularFile(favicon)).unit
       yield ()
-    end if
-  end copyStaticAssets
 
   private def copyClientBundle(out: Path): IO[HubError, Unit] =
     val marker = Paths.get("target/hub-client-js.path")
@@ -137,8 +134,6 @@ object BuildHub extends ZIOAppDefault:
         _ <- HubIo.copy(src, dest)
         _ <- bustClientCache(out, dest)
       yield ()
-    end if
-  end copyClientBundle
 
   /** Pages/Fastly cache `client.js` for 10 minutes. A content hash on the script URL makes a new bundle a new cache key
     * so a stale island cannot sit in front of fresh HTML.
@@ -155,7 +150,6 @@ object BuildHub extends ZIOAppDefault:
         if next == html then ZIO.fail(HubError.LandingIncomplete(Vector(needle)))
         else HubIo.writeUtf8(index, next)
     yield ()
-  end bustClientCache
 
   private def injectFavicon(out: Path): IO[HubError, Unit] =
     val index = out.resolve("index.html")
@@ -169,8 +163,6 @@ object BuildHub extends ZIOAppDefault:
             html.replaceFirst("</title>", """</title><link rel="icon" href="favicon.ico">"""),
           )
       }
-    end if
-  end injectFavicon
 
   private def loadFallbackProjects(urls: Vector[String]): ZIO[Client, HubError, Vector[ProjectMeta]] =
     ZIO
