@@ -40,8 +40,6 @@ object HubView:
         blurb,
         meta,
       )
-    end if
-  end card
 
   def proofPanel(beat: HubCopy.ProofBeat): UI[Any] =
     E.div(
@@ -115,7 +113,6 @@ object HubView:
         )
       }*),
     )
-  end stack
 
   private def footer: UI[Any] =
     E.footer(

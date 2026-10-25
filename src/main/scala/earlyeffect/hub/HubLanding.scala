@@ -20,7 +20,6 @@ final class HubLanding extends LandingTemplate:
         Vector(attr("lang", "en")),
       )
     )
-  end wrap
 
   private def head(model: SiteModel, urls: Vector[String]): UI[Any] =
     val desc = model.description.getOrElse(HubCopy.description)
@@ -60,7 +59,6 @@ final class HubLanding extends LandingTemplate:
         el("link", Vector.empty, Vector(attr("rel", LiveCatalogIds.MetaLinkRel), attr("href", url)))
       },
     )
-  end head
 
   private def el(tag: String, children: Vector[UI[Any]], attrs: Vector[Attr[Any]] = Vector.empty): UI[Any] =
     UI.Element(tag, attrs, children)

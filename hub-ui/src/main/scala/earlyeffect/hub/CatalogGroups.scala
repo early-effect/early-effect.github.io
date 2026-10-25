@@ -21,7 +21,6 @@ object CatalogGroups:
     grouped match
       case head +: rest => head.copy(projects = head.projects ++ leftovers) +: rest
       case _            => grouped
-  end bays
 
   def blurb(project: ProjectMeta): String =
     val fromMeta = project.description.map(_.trim).filter(_.nonEmpty).filterNot { d =>
