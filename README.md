@@ -45,7 +45,7 @@ Custom domain: `www.earlyeffect.rocks` (see `CNAME`).
 ## Development
 
 ```bash
-./scripts/install-git-hooks  # once per clone: pre-commit runs scalafmtCheckAll
+./scripts/install-git-hooks  # once per clone: pre-commit runs scalafmtCheckAll, commit-msg rejects agent attribution
 ```
 
 ## License
